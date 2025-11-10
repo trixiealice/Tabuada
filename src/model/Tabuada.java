@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.tabuada;
+package model;
 
 import java.util.Scanner;
 
@@ -55,6 +55,7 @@ public class Tabuada {
         while (i < tabuada.length){
             System.out.println(tabuada[i]);
             i++; // i =mi + 1
+
         }
     }
 }
