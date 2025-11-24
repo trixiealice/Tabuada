@@ -1,18 +1,24 @@
 package br.senai.sp.jandira.tabuada.ui;
 
+import com.sun.javafx.charts.Legend;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
+import model.Tabuada;
 
 
 import java.awt.*;
+import java.util.Optional;
 
 public class TelaTabuada extends Application {
 
@@ -33,20 +39,25 @@ public class TelaTabuada extends Application {
 
         // Criar o header da tela
         VBox header = new VBox();
-        header.setPrefHeight(100);
+        header.setPrefHeight(80);
         header.setStyle("-fx-background-color: #00afb9;");
 
         // Colocar o conteúdo no header
         Label labelTitulo = new Label("Tabuada");
+        labelTitulo.setPadding(new Insets(8,0,0,8));
         labelTitulo.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20");
 
         Label labelSubtitulo = new Label("Crie a tabuada que sua imaginação mandar!! ^-^");
+        labelSubtitulo.setPadding(new Insets(0,0,8,8));
 
         // Colocar labels dentro do header
         header.getChildren().addAll(labelTitulo, labelSubtitulo);
 
         // Criar o grid de formulário
         GridPane gridFormulario = new GridPane();
+        gridFormulario.setPadding(new Insets(8,8,8,8));
+        gridFormulario.setVgap(10);
+        gridFormulario.setHgap(10);
         gridFormulario.setPrefHeight(100);
         gridFormulario.setStyle("-fx-background-color: #fdfcdc;");
 
@@ -70,7 +81,11 @@ public class TelaTabuada extends Application {
 
         // Criar caixa de botões
         HBox boxBotoes = new HBox();
-        boxBotoes.setPrefHeight(200);
+        boxBotoes.setSpacing(10);
+        Pane panebuttons = new Pane();
+        panebuttons.setPadding(new Insets(16,0,16,8));
+
+        panebuttons.getChildren().addAll(boxBotoes);
         boxBotoes.setStyle("-fx-background-color: #fed9b7;");
 
         // Criar botões
@@ -88,7 +103,10 @@ public class TelaTabuada extends Application {
 
         // Criando componentes de resultados
         Label labelResultados = new Label("Resultados: ");
-        ListView listaResultados = new ListView();
+        labelResultados.setPadding(new Insets(8,8,8,8));
+        labelResultados.setStyle("-fx-text-fill: white;");
+        ListView listaTabuada = new ListView();
+        boxResultados.getChildren().addAll(labelResultados, listaTabuada);
 
         // Adiconar componentes ao root
         root.getChildren().add(header);
@@ -99,6 +117,44 @@ public class TelaTabuada extends Application {
         stage.setScene(scene);
 
         stage.show();
+
+        buttonLimpar.setOnAction(e -> {
+            textFieldMultiplicador.setText("");
+            textFieldMaiorMultiplicador.setText("");
+            textFieldMenorMultiplicador.setText("");
+            listaTabuada.getItems().clear();
+        });
+
+        buttonCalcular.setOnAction(e -> {
+            int multiplicador = Integer.parseInt(textFieldMultiplicador.getText());
+
+        Tabuada tabuada = new Tabuada();
+
+        tabuada.multiplicando =
+                Integer.parseInt(textFieldMultiplicador.getText());
+
+        tabuada.multiplicadorInicial =
+                Integer.parseInt(textFieldMenorMultiplicador.getText());
+
+        tabuada.multiplicadorFinal =
+                Integer.parseInt(textFieldMaiorMultiplicador.getText());
+
+        String[] resultado = tabuada.calcularTabuada();
+        listaTabuada.getItems().addAll(resultado);
+
+        });
+
+        buttonSair.setOnAction(e -> {
+
+            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+            Optional<ButtonType> resposta = alerta.showAndWait();
+
+            if (resposta.get() == ButtonType.OK){
+                System.exit(0);
+            }
+            System.out.println(resposta.get().getText());
+
+        });
 
     }
 

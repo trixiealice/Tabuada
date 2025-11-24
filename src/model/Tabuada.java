@@ -24,7 +24,7 @@ public class Tabuada {
 
     }
 
-    public void calcularTabuada(){
+    public String[] calcularTabuada(){
         int apoio = 0;
 
         if (multiplicadorFinal < multiplicadorInicial){
@@ -44,7 +44,7 @@ public class Tabuada {
             i = i + 1;
         }
 
-        exibirTabuada();
+       return tabuada;
 
     }
 
