@@ -18,6 +18,11 @@ import model.Tabuada;
 
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class TelaTabuada extends Application {
@@ -98,7 +103,7 @@ public class TelaTabuada extends Application {
 
         // Criamos caixa de resultados
         VBox boxResultados = new VBox();
-        boxResultados.setPrefHeight(100);
+        boxResultados.setPrefHeight(300);
         boxResultados.setStyle("-fx-background-color: #f07167;");
 
         // Criando componentes de resultados
@@ -142,6 +147,16 @@ public class TelaTabuada extends Application {
         String[] resultado = tabuada.calcularTabuada();
         listaTabuada.getItems().addAll(resultado);
 
+        // Gravar os dados da tabuada em arquivos
+            Path arquivo = Path.of("c:\\users\\25203690\\ds1t\\tabuada\\dados_tabuada.csv");
+
+            String dados = textFieldMultiplicador.getText() + ";" + textFieldMenorMultiplicador.getText() + ":" + textFieldMaiorMultiplicador.getText() + ";" + LocalDateTime.now() + "\n";
+
+            try {
+                Files.writeString(arquivo, dados, StandardOpenOption.APPEND);
+            }   catch (IOException erro) {
+                System.out.println(erro.getMessage());
+            }
         });
 
         buttonSair.setOnAction(e -> {
